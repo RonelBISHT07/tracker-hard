@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="A subtle, minimal, and premium daily activity tracker featuring monthly calendars and habit streak logging." />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>" />
+  <title>HARD Tracker — Minimal Daily Habits & Streaks</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- App Stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Background Glows for Premium Aesthetic -->
+  <div class="glow-bg glow-bg-1"></div>
+  <div class="glow-bg glow-bg-2"></div>
+
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-logo">
+        <span class="logo-icon">⚡</span>
+        <h1>HARD</h1>
+      </div>
+      <div class="header-right">
+        <button id="theme-toggle-btn" class="theme-btn" aria-label="Toggle Theme">
+          <svg id="theme-icon-sun" class="theme-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+          <svg id="theme-icon-moon" class="theme-icon hidden" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+        </button>
+        <div class="header-date" id="current-date-display">
+          Thursday, May 28, 2026
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Layout -->
+    <main class="app-main">
+      
+      <!-- Left Panel: Calendar & Streaks -->
+      <section class="panel-left">
+        <!-- Streak Card -->
+        <div class="card streak-card">
+          <div class="streak-header">
+            <div class="streak-title-container">
+              <span class="card-icon">🔥</span>
+              <h2>Daily Streak</h2>
+            </div>
+            <span class="streak-badge" id="current-streak-val">0 days</span>
+          </div>
+          <div class="streak-stats">
+            <div class="stat-box">
+              <span class="stat-label">Current Streak</span>
+              <span class="stat-value" id="stat-current-streak">0</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-box">
+              <span class="stat-label">Best Streak</span>
+              <span class="stat-value" id="stat-best-streak">0</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-box">
+              <span class="stat-label">Completions</span>
+              <span class="stat-value" id="stat-total-completions">0</span>
+            </div>
+          </div>
+          <div class="streak-bar-container">
+            <span class="streak-bar-label">Streak Status</span>
+            <div class="streak-grid" id="streak-recent-days">
+              <!-- Dynamically populated mini indicators of the last 7 days -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Calendar Card -->
+        <div class="card calendar-card">
+          <div class="calendar-header">
+            <h2 id="calendar-month-year">May 2026</h2>
+            <div class="calendar-nav">
+              <button id="prev-month-btn" aria-label="Previous Month">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+              </button>
+              <button id="next-month-btn" aria-label="Next Month">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+              </button>
+            </div>
+          </div>
+          
+          <div class="calendar-weekdays">
+            <span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span><span>Su</span>
+          </div>
+          
+          <div class="calendar-days" id="calendar-days-grid">
+            <!-- Dynamically populated calendar days -->
+          </div>
+
+          <div class="calendar-legend">
+            <div class="legend-item"><span class="dot empty"></span> <span>None done</span></div>
+            <div class="legend-item"><span class="dot partial"></span> <span>In progress</span></div>
+            <div class="legend-item"><span class="dot full"></span> <span>All done</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Panel: Daily Checklist -->
+      <section class="panel-right">
+        <div class="card checklist-card">
+          <div class="checklist-header">
+            <div class="checklist-meta">
+              <span id="selected-day-label">Today</span>
+              <h2 id="selected-date-title">May 28, 2026</h2>
+            </div>
+            <button class="btn btn-primary" id="open-add-modal-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+              Add Activity
+            </button>
+          </div>
+
+          <div class="checklist-progress">
+            <div class="progress-info">
+              <span id="completion-text">0 of 0 completed</span>
+              <span id="completion-percentage">0%</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-bar" id="checklist-progress-bar" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <div class="checklist-empty" id="checklist-empty-state">
+            <div class="empty-icon">🌱</div>
+            <h3>No activities configured</h3>
+            <p>Add some daily activities to kickstart your tracking and build streaks.</p>
+            <button class="btn btn-secondary btn-sm" id="empty-state-add-btn">Create First Activity</button>
+          </div>
+
+          <div class="checklist-items" id="checklist-items-container">
+            <!-- Dynamically populated activity items -->
+          </div>
+        </div>
+      </section>
+      
+    </main>
+
+    <footer class="app-footer">
+      <p>&copy; 2026 HARD Tracker. Minimal &bull; Local &bull; Secure</p>
+    </footer>
+  </div>
+
+  <!-- Add/Edit Activity Modal -->
+  <div class="modal-overlay" id="activity-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modal-title">New Activity</h2>
+        <button class="modal-close" id="close-modal-btn" aria-label="Close modal">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+      <form id="activity-form">
+        <input type="hidden" id="edit-activity-id" value="" />
+        
+        <div class="form-group">
+          <label for="activity-name">Name</label>
+          <input type="text" id="activity-name" required placeholder="e.g. Read 15 pages, Drink water, Meditate" maxlength="50" autocomplete="off" />
+        </div>
+
+        <div class="form-group">
+          <label for="activity-category">Category</label>
+          <div class="category-select-grid">
+            <label class="category-option">
+              <input type="radio" name="category" value="health" checked />
+              <span class="category-box" style="--cat-color: #10b981; --cat-bg: rgba(16, 185, 129, 0.15)">
+                <span class="cat-icon">❤️</span> Health
+              </span>
+            </label>
+            <label class="category-option">
+              <input type="radio" name="category" value="mind" />
+              <span class="category-box" style="--cat-color: #8b5cf6; --cat-bg: rgba(139, 92, 246, 0.15)">
+                <span class="cat-icon">🧠</span> Mind
+              </span>
+            </label>
+            <label class="category-option">
+              <input type="radio" name="category" value="fitness" />
+              <span class="category-box" style="--cat-color: #f59e0b; --cat-bg: rgba(245, 158, 11, 0.15)">
+                <span class="cat-icon">💪</span> Fitness
+              </span>
+            </label>
+            <label class="category-option">
+              <input type="radio" name="category" value="work" />
+              <span class="category-box" style="--cat-color: #3b82f6; --cat-bg: rgba(59, 130, 246, 0.15)">
+                <span class="cat-icon">💼</span> Work
+              </span>
+            </label>
+            <label class="category-option">
+              <input type="radio" name="category" value="creative" />
+              <span class="category-box" style="--cat-color: #ec4899; --cat-bg: rgba(236, 72, 153, 0.15)">
+                <span class="cat-icon">🎨</span> Creative
+              </span>
+            </label>
+            <label class="category-option">
+              <input type="radio" name="category" value="routine" />
+              <span class="category-box" style="--cat-color: #6b7280; --cat-bg: rgba(107, 114, 128, 0.15)">
+                <span class="cat-icon">✨</span> Routine
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="cancel-modal-btn">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="save-activity-btn">Save Activity</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- App Script -->
+  <script src="app.js"></script>
+</body>
+</html>

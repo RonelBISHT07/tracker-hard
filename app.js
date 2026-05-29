@@ -617,10 +617,96 @@ function applyTheme(theme) {
   localStorage.setItem('hard_theme', theme);
 }
 
+// --- Lock Screen Handling ---
+function initLockScreen() {
+  const lockScreenEl = document.getElementById('lock-screen');
+  const lockForm = document.getElementById('lock-form');
+  const lockInput = document.getElementById('lock-input');
+  const lockTitle = document.getElementById('lock-title');
+  const lockSubtitle = document.getElementById('lock-subtitle');
+  const lockCard = document.querySelector('.lock-card');
+  const lockBtn = document.getElementById('lock-btn');
+  
+  // Show lock screen on start
+  lockScreen();
+
+  // Handle lock button in header
+  lockBtn.addEventListener('click', () => {
+    lockScreen();
+  });
+
+  // Handle unlock form submission
+  lockForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const enteredVal = lockInput.value;
+    const storedPasscode = localStorage.getItem('hard_passcode_v2');
+    
+    if (!storedPasscode) {
+      // Setup Mode: Save passcode
+      if (enteredVal.length >= 4) {
+        localStorage.setItem('hard_passcode_v2', enteredVal);
+        unlockScreen();
+      } else {
+        showLockError('Passcode must be at least 4 digits');
+      }
+    } else {
+      // Lock Mode: Validate passcode
+      if (enteredVal === storedPasscode) {
+        unlockScreen();
+      } else {
+        showLockError('Incorrect passcode');
+      }
+    }
+  });
+
+  function lockScreen() {
+    lockScreenEl.classList.remove('unlocked');
+    lockInput.value = '';
+    const storedPasscode = localStorage.getItem('hard_passcode_v2');
+    
+    if (!storedPasscode) {
+      lockTitle.textContent = 'Create Passcode';
+      lockSubtitle.textContent = 'Choose a 4-to-6 digit passcode to lock your tracker.';
+    } else {
+      lockTitle.textContent = 'Enter Passcode';
+      lockSubtitle.textContent = 'Enter your passcode to unlock your dashboard.';
+    }
+    
+    // Autofocus input
+    setTimeout(() => lockInput.focus(), 150);
+  }
+
+  function unlockScreen() {
+    lockScreenEl.classList.add('unlocked');
+  }
+
+  function showLockError(msg) {
+    lockSubtitle.textContent = msg;
+    lockSubtitle.style.color = 'var(--color-rose)';
+    lockCard.classList.add('error-shake');
+    lockInput.value = '';
+    lockInput.focus();
+    
+    setTimeout(() => {
+      lockCard.classList.remove('error-shake');
+      lockSubtitle.style.color = '';
+      const storedPasscode = localStorage.getItem('hard_passcode_v2');
+      if (!storedPasscode) {
+        lockSubtitle.textContent = 'Choose a 4-to-6 digit passcode to lock your tracker.';
+      } else {
+        lockSubtitle.textContent = 'Enter your passcode to unlock your dashboard.';
+      }
+    }, 1000);
+  }
+}
+
 // --- Initialize Event Listeners ---
 function initApp() {
   // Setup theme
   initTheme();
+  
+  // Setup Lock Screen
+  initLockScreen();
   
   // Load data
   loadFromStorage();

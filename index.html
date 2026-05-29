@@ -21,6 +21,21 @@
   <div class="glow-bg glow-bg-1"></div>
   <div class="glow-bg glow-bg-2"></div>
 
+  <!-- Lock Screen Overlay -->
+  <div class="lock-screen-overlay" id="lock-screen">
+    <div class="lock-card">
+      <div class="lock-icon-wrapper">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
+      <h2 id="lock-title">Enter Passcode</h2>
+      <p id="lock-subtitle">Enter your passcode to unlock your dashboard.</p>
+      <form id="lock-form">
+        <input type="password" id="lock-input" required placeholder="••••" maxlength="6" autocomplete="off" />
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Unlock</button>
+      </form>
+    </div>
+  </div>
+
   <div class="app-container">
     <!-- Header -->
     <header class="app-header">
@@ -28,6 +43,10 @@
         <h1>HARD</h1>
       </div>
       <div class="header-right">
+        <button id="lock-btn" class="btn btn-secondary btn-sm" aria-label="Lock Screen">
+          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Lock
+        </button>
         <div class="theme-selector" role="group" aria-label="Theme Selector">
           <button class="theme-select-btn" data-theme="dark">Dark</button>
           <button class="theme-select-btn" data-theme="light">Light</button>

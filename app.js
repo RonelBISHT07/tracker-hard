@@ -583,26 +583,37 @@ function initTheme() {
   const storedTheme = localStorage.getItem('hard_theme') || 'dark';
   applyTheme(storedTheme);
   
-  document.getElementById('theme-toggle-btn').addEventListener('click', () => {
-    const currentTheme = document.body.classList.contains('light-theme') ? 'light' : 'dark';
-    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-    applyTheme(newTheme);
+  // Attach event listeners to all theme select buttons
+  const buttons = document.querySelectorAll('.theme-select-btn');
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const selectedTheme = btn.getAttribute('data-theme');
+      applyTheme(selectedTheme);
+    });
   });
 }
 
 function applyTheme(theme) {
-  const sunIcon = document.getElementById('theme-icon-sun');
-  const moonIcon = document.getElementById('theme-icon-moon');
+  // Reset all theme classes
+  document.body.classList.remove('light-theme', 'summer-theme');
   
+  // Apply selected theme class
   if (theme === 'light') {
     document.body.classList.add('light-theme');
-    sunIcon.classList.add('hidden');
-    moonIcon.classList.remove('hidden');
-  } else {
-    document.body.classList.remove('light-theme');
-    sunIcon.classList.remove('hidden');
-    moonIcon.classList.add('hidden');
+  } else if (theme === 'summer') {
+    document.body.classList.add('summer-theme');
   }
+  
+  // Update button active state
+  const buttons = document.querySelectorAll('.theme-select-btn');
+  buttons.forEach(btn => {
+    if (btn.getAttribute('data-theme') === theme) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
+  
   localStorage.setItem('hard_theme', theme);
 }
 
